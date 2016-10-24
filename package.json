@@ -1,0 +1,38 @@
+{
+  "name": "cold-brew-tutorial",
+  "version": "1.0.0",
+  "description": "An example WebRTC chat, video and audio application built with TDD",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test-chat": "./node_modules/mocha/bin/mocha test/chat.spec.js",
+    "test-video": "./node_modules/mocha/bin/mocha test/video.spec.js",
+    "test": "./node_modules/mocha/bin/mocha test/*.spec.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wcbarnes/cold-brew-tutorial.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wcbarnes/cold-brew-tutorial/issues"
+  },
+  "homepage": "https://github.com/wcbarnes/cold-brew-tutorial#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "cold-brew": "^1.0.23",
+    "express": "^4.14.0",
+    "jquery": "^3.1.1",
+    "mocha": "^3.1.2",
+    "selenium-webdriver": "^3.0.0-beta-3",
+    "socket.io": "^1.5.1",
+    "socket.io-client": "^1.5.1",
+    "supertest": "^2.0.1",
+    "webrtc-adapter": "^2.0.5"
+  }
+}
