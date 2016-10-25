@@ -18,6 +18,22 @@ io.on('connection', (socket) => {
     numClients++;
     respond(numClients);
   });
+
+  socket.on('send offer', (offer) => {
+    socket.broadcast.emit('receive offer', offer);
+  });
+  socket.on('send answer', (answer) => {
+    socket.broadcast.emit('receive answer', answer);
+  });
+
+  socket.on('send ice candidate', (candidate) => {
+    socket.broadcast.emit('receive ice candidate', candidate);
+  });
+
+
+  socket.on('leave page', () => {
+    numClients--;
+  });
 });
 
 app.use(express.static(__dirname));

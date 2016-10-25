@@ -7,7 +7,7 @@
 /* eslint prefer-template: 0 */
 
 const request = require('supertest');
-const { app } = require('../server');
+const { app, resetNumClients } = require('../server');
 const { expect } = require('chai');
 
 const coldBrew = require('cold-brew');
@@ -95,5 +95,68 @@ describe('client-side messenger application', function () {
 
   afterEach(function (done) {
     client.quit().then(() => done());
+  });
+});
+
+describe('signaling', function () {
+  let client1;
+  let client2;
+
+  beforeEach(function () {
+    resetNumClients(0);
+    client1 = coldBrew.createClient();
+    client2 = coldBrew.createClient();
+  });
+
+  it('offer should be sent by the second person to arrive on the page', function (done) {
+    this.timeout(5000);
+
+    client1.get(ADDRESS);
+    client2.get(ADDRESS);
+
+    client2.waitUntilSendSignaling([
+      'send offer',
+    ]).then((sent) => {
+      if (sent) {
+        done();
+      }
+    });
+  });
+
+  it('clients should exchange offer and answer', function (done) {
+    this.timeout(5000);
+    client1.get(ADDRESS);
+    client2.get(ADDRESS);
+    client2.waitUntilSendSignaling(['send offer']);
+    client1.waitUntilReceiveSignaling(['receive offer']);
+    client1.waitUntilSendSignaling(['send answer']);
+    client2.waitUntilReceiveSignaling(['receive answer'])
+      .then((received) => {
+        if (received) {
+          done();
+        }
+      });
+  });
+
+  it('should be able to send and receive ICE Candidates', function (done) {
+    this.timeout(5000);
+    client1.get(ADDRESS);
+    client2.get(ADDRESS);
+    client1.waitUntilRTCEvents(['icecandidate']);
+    client1.waitUntilSendSignaling(['send ice candidate']);
+    client2.waitUntilReceiveSignaling(['receive ice candidate']);
+    client2.waitUntilRTCEvents(['icecandidate']);
+    client2.waitUntilSendSignaling(['send ice candidate']);
+    client1.waitUntilReceiveSignaling(['receive ice candidate'])
+      .then((received) => {
+        if (received) {
+          done();
+        }
+      });
+  });
+
+  afterEach(function (done) {
+    client1.quit();
+    client2.quit().then(() => done());
   });
 });
