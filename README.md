@@ -9,3 +9,5 @@ We're also on [npm](https://www.npmjs.com/package/cold-brew)
 
 And we love all the feedback you have! Complaints, Comments, just wanna say hi? 
 Hit us up on this [google form](https://goo.gl/forms/Gu7aorxSFKJFBvl23). 
+
+GitHub tutorial page coming soon!!!
